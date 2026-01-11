@@ -1,48 +1,42 @@
 --[[
-    Lenovo Way 2026 - Brookhaven Admin Menu
-    Features: ESP, VIP, Fly, NoClip, Kill All (Troll)
+    Lenovo Way 2026 - Ultra Light Brookhaven
+    No-Lag Version
 ]]
 
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("Lenovo Way 2026 - Brookhaven", "DarkTheme")
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Lenovo Way 2026", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
--- Вкладка Игрок
-local Tab1 = Window:NewTab("Player")
-local Section1 = Tab1:NewSection("Movement")
+local Tab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
-Section1:NewButton("Fly (Нажми E)", "Позволяет летать", function()
-    -- Скрипт на полет встроенный
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))()
-end)
+Tab:AddButton({
+	Name = "Включить ESP (Видеть всех)",
+	Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Iratu5/ESP/main/ESP.lua"))()
+  	end    
+})
 
-Section1:NewToggle("NoClip", "Проход сквозь стены", function(state)
-    getgenv().noclip = state
-    game:GetService("RunService").Stepped:Connect(function()
-        if getgenv().noclip then
-            game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
-        end
-    end)
-end)
+Tab:AddToggle({
+	Name = "NoClip (Сквозь стены)",
+	Default = false,
+	Callback = function(Value)
+		getgenv().noclip = Value
+        game:GetService("RunService").Stepped:Connect(function()
+            if getgenv().noclip then
+                game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+            end
+        end)
+	end    
+})
 
--- Вкладка Визуальное (ESP)
-local Tab2 = Window:NewTab("Visuals")
-local Section2 = Tab2:NewSection("ESP")
+Tab:AddButton({
+	Name = "Fly (Полет на E)",
+	Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.lua"))()
+  	end    
+})
 
-Section2:NewButton("Включить ESP", "Видеть всех сквозь стены", function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Iratu5/ESP/main/ESP.lua"))()
-end)
-
--- Вкладка Теневой VIP и Троллинг
-local Tab3 = Window:NewTab("Troll & VIP")
-local Section3 = Tab3:NewSection("Abuse")
-
-Section3:NewButton("Убить всех (Troll)", "Пытается телепортировать всех в бездну", function()
-    -- В Брукхевене прямое убийство запрещено, но можно "выкинуть" игроков через баги машин или кроватей
-    print("Lenovo Way: Запуск троллинг-системы...")
-    -- Логика выкидывания игроков (визуально для начала)
-end)
-
-Section3:NewButton("Unlock VIP Items", "Разблокировать VIP транспорт", function()
-    -- Скрипт разблокировки визуального VIP
-    print("VIP Unlocked!")
-end)
+OrionLib:Init()
